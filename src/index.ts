@@ -3,6 +3,7 @@ import { isSupportedWP, collectInfo } from './atom/main'
 import { getState, logStateChange } from './atom/lifecircle'
 import { Options } from './index.d'
 import { initCoreVitals } from './atom/coreVitals'
+import { omit } from 'lodash'
 
 class WPMonit {
   private v = '0.0.3'
@@ -18,7 +19,14 @@ class WPMonit {
       ...config,
       ...info,
     }
-    const { dsn } = config
+    const { dsn, callback } = config
+
+    // if define callback then trigger and return
+    if (typeof callback === 'function') {
+      callback && callback(omit(data, ['callback']))
+      return
+    }
+
     try {
       const res = navigator.sendBeacon(dsn, JSON.stringify(data))
       // write in queue failed, then fetch the data
