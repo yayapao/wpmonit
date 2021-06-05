@@ -1,51 +1,95 @@
-简体中文 | [English](./README.md)
+English | [简体中文](./README.zh-CN.md)
 
-# NPM-TEMPLATE
+# wpmonit 👀
 
-NPM-TEMPLATE is a NPM Template Project based on [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html) 和 [rollup](https://rollupjs.org/guide/en/) , or you can just start with JavaScript!
+<b>wpmonit</b> means Web Performance Monitor, which can help you collect the web performance related informations at the right time!
 
-we support `.js`, `.ts`, `.tsx` file type
+This project is generated from [npm-ts-template](https://github.com/Y-lonelY/npm-template/tree/ts).
 
-**Attention，you need to config rollup.config.js's input param（which point the entry file）correctly**
+## Install
 
-Support NPM Packages:
+run `npm i wpmonit` or `yarn add wpmonit`
 
-- [import-import-lazy](https://www.npmjs.com/package/react-import-lazy)
-- [cell-render](https://www.npmjs.com/package/cell-render)
-- [react-error-catcher](https://www.npmjs.com/package/react-error-catcher)
+## Quick Start
 
+Here is a quick demostration:
 
-## How
+```javascript
+import WPMonitor from 'wp-monitor'
 
-### Publish
+// transfer the config, actually it will transfer whatever you config!
+const wpmonitIns = wpmonit.init({
+  app: 'dftApp',
+  user: 'dftUser',
+  // auto report after delay time range
+  delay: 10 * 1000,
+  // To send data to Server
+  dsn: 'http://target.url.com/api/catchdata',
+})
 
-1. do `npm install` to import some dependences
-2. develop under `src/` directory（or you can modify `rollup.config.js` -> `input` to change the rule）
-3. do `npm run build` to generate `index.js` on root，the publish it to the NPM platform
+wpmonitIns.setConfig({
+  user: 'changeUser',
+})
+```
 
-### Local Test
+## Config
 
-Actually in `example/`，i have created a React mini project by `create react app`, what you need to do is importing what you develop to the `example/node_module`
+In fact, we will return all your-self defined config, but we will store some of it to identify the APP!
 
-- `cd example` goto example directory
-- `yarn add ../npm` add target npm's file as local module
-- `yarn start` start the project
+- `app`: used to identify the APP
+- `user`: used to identify the user
+- `delay`: [Optional] define how long (ms) will it take to report data automaticly, default is 60 \* 1000
+- `dsn`: [Optional] To send data to Server
 
-Attention, i have created the `npm` directory, so you can publish the npm package in this folder, so you can config the `control.sh` to do something, in this case to avoid some unless dependencies!
+Beside, you can send whatever you need!
 
-### Support Typescript
+## Data Structure
 
-Firstly, you need to `npm install --save typescript @types/node @types/react @types/react-dom @types/jest` and `npm install --save-dev @rollup/plugin-typescript` to support Typescript compile and package!
+Here is the reported infomation:
 
-Then, we need to add some configs:
-- remove `outDir` in `tsconfig.json`, or you will caught some errors when packing
-- config `types` in `package.json`, which will take the type define file into the bundle
-- config `files` to open whitelist, used to publish the target files to npm
+```javascript
+{
+  timeOrigin: number
+  href: string
 
-Attention: `dependencies` is required to support the `.d.ts` file, see [publish](https://www.tslang.cn/docs/handbook/declaration-files/publishing.html) for more details
+  // paint metric
+  fp: number
+  fcp: number
+  tbt: number
 
-### About React
+  // core web vitals
+  lcp: number
+  fid: number
+  cls: number
 
-In most case, you will not want to include some packages(like `React`, `lodash` etc) when bundle up.
+  // memory metric
+  jsHeapSizeLimit: number
+  totalJSHeapSize: number
+  usedJSHeapSize: number
 
-You can config `external: ["react", "react-dom"]` in `rollup.config.js` to avoid this case, it will not the bundle up the whole `react`, and will replace with `var React = require('react');`, so you must ensure that you have included the `react` in your project! 
+  // nav metric
+  fetchTime: number
+  appCache: number
+  workerTime: number
+  networkTime: number
+  downloadTime: number
+  ttfb: number
+  headerSize: number
+  dnsLookupTime: number
+  deviceMemory: number
+  hardwareConcurrency: number
+  serviceWorkerStatus: 'unsupported' | 'supported' | 'controlled'
+
+  // network metric
+  effectiveType: string
+  downlink: number
+  rtt: number
+  saveData: boolean
+
+  // screen metric
+  width: number
+  height: number
+  pixelDepth: number
+  colorDepth: number
+}
+```

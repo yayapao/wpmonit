@@ -1,38 +1,22 @@
 {
-  "name": "npm-template-master",
-  "version": "1.0.0",
-  "description": "make some descriptions here!",
+  "name": "wpmonit",
+  "version": "1.0.1",
+  "description": "Powerful frontend Web Performance Measure - SDK!",
   "main": "npm/index.js",
   "types": "npm/index.d.ts",
   "keywords": [
-    "[\"react\"",
-    "\"key\"",
-    "\"tag\"]"
+    "[\"web\"",
+    "\"performance\"",
+    "\"measure\"]"
   ],
   "author": "Y-lonelY",
   "license": "MIT",
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "@types/jest": "^24.0.0",
-    "@types/node": "^12.0.0",
-    "@types/react-dom": "^16.9.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "4.0.0",
-    "tslib": "^2.0.1",
-    "typescript": "~3.7.2"
+    "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "prepublish": "npm version",
-    "publish": "npm publish",
-    "publish:beta": "npm publish --tag beta",
-    "build": "rollup -c && bash control.sh build",
-    "example": "cd example/ && yarn install && yarn start"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "dev": "rollup -i ./src/entry.ts -w -c",
+    "build": "rimraf npm cdn && rollup -c && bash control.sh build"
   },
   "browserslist": {
     "production": [
@@ -48,9 +32,15 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^15.0.0",
+    "@rollup/plugin-multi-entry": "^4.0.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@rollup/plugin-typescript": "^5.0.2",
+    "@types/node": "^14.14.31",
     "@types/react": "^16.9.49",
-    "rollup-plugin-postcss": "^3.1.8"
+    "rimraf": "^3.0.2",
+    "rollup-plugin-postcss": "^3.1.8",
+    "rollup-plugin-terser": "^7.0.2",
+    "tslib": "^2.1.0",
+    "typescript": "^4.2.2"
   }
 }

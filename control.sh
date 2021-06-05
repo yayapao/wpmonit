@@ -2,14 +2,23 @@
 
 # app version
 version="0.0.1"
-app="npm-template"
+app="npm-template-pure"
 
-echo "hello"
+echo ">>> Thanks for using npm javascript template"
 
 function build() {
   echo ">> The current version of $app is $version"
-  cp index.js npm/index.js
-  cp index.d.ts npm/index.d.ts
+  # handle lib directory
+  # 判断文件是否存在(多文件时，用来重命名文件)
+  if [ -d "npm/" ]; then
+    echo ">>> Rename the dist directory"
+    mv npm/multi-entry.js npm/index.js
+    else
+    echo ">>> No such dir"
+  fi
+
+  # handle typed file
+  cp src/index.d.ts npm/index.d.ts
 }
 
 
