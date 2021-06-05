@@ -1,6 +1,6 @@
 {
   "name": "wpmonit",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Powerful frontend Web Performance Measure - SDK!",
   "main": "npm/index.js",
   "types": "npm/index.d.ts",
@@ -16,7 +16,9 @@
     "email": "luckyyoung666@gmail.com"
   },
   "license": "MIT",
-  "files": ["npm/"],
+  "files": [
+    "npm/"
+  ],
   "dependencies": {
     "lodash": "^4.17.21",
     "ua-parser-js": "^0.7.28",
