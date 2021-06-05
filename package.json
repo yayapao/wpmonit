@@ -10,7 +10,13 @@
     "\"measure\"]"
   ],
   "author": "Y-lonelY",
+  "homepage": "https://github.com/Y-lonelY/wpmonit",
+  "bugs": {
+    "url": "https://github.com/Y-lonelY/wpmonit/issues",
+    "email": "luckyyoung666@gmail.com"
+  },
   "license": "MIT",
+  "files": ["npm/"],
   "dependencies": {
     "lodash": "^4.17.21",
     "ua-parser-js": "^0.7.28",
