@@ -36,10 +36,12 @@ wpmonitIns.setConfig({
 
 事实上，它会把你的配置原封不动进行传递，但是我们会用到一些必要的属性来标记应用！
 
-- `app`: 用来标记应用
-- `user`: 用来标记使用者
-- `delay`: 定义多少毫秒后主动上报，默认 60s,可选
-- `dsn`: 定义回调服务地址
+- `app: string`: 用来标记应用
+- `user: string`: 用来标记使用者
+- `delay: number`: 定义多少毫秒后主动上报，默认 60s,可选
+- `tags: any`: [可选] 自定义 tags
+- `dsn: string`: [可选] 数据处理服务的地址
+- `callback: (data) => void`: [可选] 自定义数据处理程序 <b>注意：当你设置了 callback，dsn 会失效，不再主动请求</b>
 
 此外，你可以传输你需要的数据～
 
@@ -49,25 +51,24 @@ wpmonitIns.setConfig({
 
 ```javascript
 {
+  // 进入页面时间戳
   timeOrigin: number
   href: string
   
-  // paint metric
+  // 页面性能黄金指标
   fp: number
   fcp: number
   tbt: number
-
-  // core web vitals
   lcp: number
   fid: number
   cls: number
 
-  // memory metric
+  // 内存指标
   jsHeapSizeLimit: number
   totalJSHeapSize: number
   usedJSHeapSize: number
 
-  // nav metric
+  // 导航信息
   fetchTime: number
   appCache: number
   workerTime: number
@@ -80,16 +81,31 @@ wpmonitIns.setConfig({
   hardwareConcurrency: number
   serviceWorkerStatus: 'unsupported' | 'supported' | 'controlled'
 
-  // network metric
+  // 网络指标
   effectiveType: string
   downlink: number
   rtt: number
   saveData: boolean
 
-  // screen metric
+  // 屏幕信息
   width: number
   height: number
   pixelDepth: number
   colorDepth: number
+
+  // 系统信息
+  browser: {
+    name: string
+    version: string
+    major: string
+  }
+  os: {
+    name: string
+    version: string
+  }
+  engine: {
+    name: string
+    version: string
+  }
 }
 ```

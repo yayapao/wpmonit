@@ -25,6 +25,12 @@ const wpmonitIns = wpmonit.init({
   delay: 10 * 1000,
   // To send data to Server
   dsn: 'http://target.url.com/api/catchdata',
+  tags: {
+    browser: 'chrome',
+  },
+  callback: (data) => {
+    console.log(data)
+  },
 })
 
 wpmonitIns.setConfig({
@@ -36,10 +42,12 @@ wpmonitIns.setConfig({
 
 In fact, we will return all your-self defined config, but we will store some of it to identify the APP!
 
-- `app`: used to identify the APP
-- `user`: used to identify the user
-- `delay`: [Optional] define how long (ms) will it take to report data automaticly, default is 60 \* 1000
-- `dsn`: [Optional] To send data to Server
+- `app: string`: used to identify the APP
+- `user: string`: used to identify the user
+- `delay: number`: [Optional] define how long (ms) will it take to report data automaticly, default is 60 \* 1000
+- `tags: any`: [Optional] define global tags
+- `dsn: string`: [Optional] Data-Handle-Server address
+- `callback: (data) => void`: [Optional] handle with the data by yourself, <b>dsn will be disable when you set callback</b>
 
 Beside, you can send whatever you need!
 
@@ -52,12 +60,10 @@ Here is the reported infomation:
   timeOrigin: number
   href: string
 
-  // paint metric
+  // core web vitals
   fp: number
   fcp: number
   tbt: number
-
-  // core web vitals
   lcp: number
   fid: number
   cls: number
@@ -91,5 +97,20 @@ Here is the reported infomation:
   height: number
   pixelDepth: number
   colorDepth: number
+
+  // os metric
+  browser: {
+    name: string
+    version: string
+    major: string
+  }
+  os: {
+    name: string
+    version: string
+  }
+  engine: {
+    name: string
+    version: string
+  }
 }
 ```
