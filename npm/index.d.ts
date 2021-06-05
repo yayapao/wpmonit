@@ -27,6 +27,8 @@ export interface Options {
   user: string
   delay: number
   dsn: string
+  tags: {[index: string]: any}
+  callback: (data: any) => void
 }
 
 export interface WPMNavInfo {
