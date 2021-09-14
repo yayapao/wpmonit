@@ -38,14 +38,16 @@ export interface WPMNavInfo {
 }
 
 export interface WPMNavigationTiming {
-  fetchTime?: number
-  appCache?: number
-  workerTime?: number
-  networkTime?: number
-  downloadTime?: number
+  redirect?: number
+  dns_lookup?: number
+  tcp_connection?: number
+  ssl_connection?: number
   ttfb?: number
-  headerSize?: number
-  dnsLookupTime?: number
+  download_time?: number
+  dom_parsed?: number
+  loadend?: number
+  total_loaded?: number
+  dom_ready?: number
 }
 
 export enum EffectiveConnectionType {

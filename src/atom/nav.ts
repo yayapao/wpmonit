@@ -5,25 +5,44 @@ import { getDM, getHC } from './constant'
 export function getNavTiming(): WPMNavigationTiming {
   if (!isSupportedWP()) return {}
   // get navigation timing data
-  const nav = window.performance.getEntriesByType("navigation")[0] as any
+  const nav = window.performance.getEntriesByType('navigation')[0] as any
   if (!nav) return {}
+  const {
+    redirectStart,
+    redirectEnd,
+    domainLookupStart,
+    domainLookupEnd,
+    connectEnd,
+    connectStart,
+    requestStart,
+    responseStart,
+    responseEnd,
+    domInteractive,
+    domComplete,
+    loadEventEnd,
+    loadEventStart,
+  } = nav
   return {
-    // request resource to get all bytes
-    fetchTime: +(nav.responseEnd - nav.fetchStart).toFixed(2),
-    // app cache time
-    appCache: +(nav.domainLookupStart - nav.fetchStart).toFixed(2),
-    // service worker + response time
-    workerTime: nav.workerStart > 0 ? +(nav.responseEnd - nav.workerStart).toFixed(2) : 0,
-    // time to fisrst bytes
-    ttfb: +(nav.responseStart - nav.requestStart).toFixed(2),
-    // network(only) actions 
-    networkTime: +(nav.responseEnd - nav.requestStart).toFixed(2),
-    // content download time
-    downloadTime: +(nav.responseEnd - nav.responseStart).toFixed(2),
-    // HTTP header size
-    headerSize: nav.transferSize - nav.encodedBodySize || 0,
+    // redirect time
+    redirect: +(redirectEnd - redirectStart).toFixed(2),
     // DNS lookup time
-    dnsLookupTime: +(nav.domainLookupEnd - nav.domainLookupStart).toFixed(2),
+    dns_lookup: +(domainLookupEnd - domainLookupStart).toFixed(2),
+    // TCP connection
+    tcp_connection: +(connectEnd - connectStart).toFixed(2),
+    // ssl connnection
+    ssl_connection: +(requestStart - connectEnd).toFixed(2),
+    // time to fisrst bytes
+    ttfb: +(responseStart - requestStart).toFixed(2),
+    // content download time
+    download_time: +(responseEnd - responseStart).toFixed(2),
+    // dom parse
+    dom_parsed: +(domInteractive - responseEnd).toFixed(2),
+    // resource loaded
+    loadend: +(loadEventEnd - loadEventStart).toFixed(2),
+    // page total loaded cost
+    total_loaded: +loadEventEnd.toFixed(2),
+    // dom ready: dom parse + dom content loaded
+    dom_ready: +domComplete.toFixed(2),
   }
 }
 
@@ -40,6 +59,6 @@ export function getNavs() {
   const timing = getNavTiming()
   return {
     ...infos,
-    ...timing
+    ...timing,
   }
 }
