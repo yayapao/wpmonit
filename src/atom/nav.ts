@@ -35,7 +35,7 @@ export function getNavTiming(): WPMNavigationTiming {
     ttfb: +(responseStart - requestStart).toFixed(2),
     // content download time
     download_time: +(responseEnd - responseStart).toFixed(2),
-    // dom parse
+    // dom parse cost time
     dom_parsed: +(domInteractive - responseEnd).toFixed(2),
     // resource loaded
     loadend: +(loadEventEnd - loadEventStart).toFixed(2),
