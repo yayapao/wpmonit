@@ -83,3 +83,14 @@ Data-Handle-Server address
 
 Handle the data by yourself
 
+
+## Metrics
+
+
+[Assessing Loading Performance in Real Life with Navigation and Resource Timing](https://developers.google.com/web/fundamentals/performance/navigation-and-resource-timing)
+
+- Navigation Timing collects performance metrics for HTML documents
+- Resource Timing collects performance metrics for document-dependent resources. Stuff like style sheets, scripts, images, et cetera
+
+
+[collection metrics](./docs/metrics.md)
