@@ -1,7 +1,9 @@
+export function init(opts: Options): WPMonit
+
 class WPMonit {
   private v: string
-  constructor() {}
-  init(opts: Partial<Options>): void
+  init(opts: Options): void
+  setConfig(opts: Partial<Options>): void
 }
 
 export interface PaintInfo {
@@ -24,11 +26,16 @@ export interface MemoryInfo {
 
 export interface Options {
   app: string
-  user: string
-  delay: number
-  dsn: string
-  tags: {[index: string]: any}
-  callback: (data: any) => void
+  user?: string
+  delay?: number
+  dsn?: string
+  tags?: {[index: string]: any}
+  // 定义异常资源的标准
+  resMaxSize?: number
+  resMaxDuration?: number
+  // 自动上报异常错误
+  autoSendSR?: boolean
+  callback?: (data: any) => void
 }
 
 export interface WPMNavInfo {
@@ -38,14 +45,19 @@ export interface WPMNavInfo {
 }
 
 export interface WPMNavigationTiming {
-  fetchTime?: number
-  appCache?: number
-  workerTime?: number
-  networkTime?: number
-  downloadTime?: number
+  redirect?: number
+  dns_lookup?: number
+  connection_time?: number
+  tls_time?: number
   ttfb?: number
-  headerSize?: number
-  dnsLookupTime?: number
+  download_time?: number
+  dom_parsed?: number
+  loadend?: number
+  total_loaded?: number
+  dom_ready?: number
+  transfer_size?: number
+  encoded_body_size?: number
+  decoded_body_size?: number
 }
 
 export enum EffectiveConnectionType {
@@ -68,5 +80,3 @@ export interface ScreenInfo {
   pixelDepth: number
   colorDepth: number
 }
-
-export function init(opts: Partial<Options>): WPMonit
