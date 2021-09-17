@@ -41,22 +41,45 @@ wpmonit configuration can be managed through params, like `const ins = wpmonit.i
 
 Used to identify the APP, required
 
-#### `user: string | required`
+
+#### `user: string | optional`
 
 Used to identify the user, required
+
 
 #### `delay: number | optional`
 
 Define how long (ms) will it take to report data automaticly, default is `60 * 1000`
 
+
 #### `tags: any | optional`
 
 define global tags
+
+
+#### `autoSendSR: boolean | optional | default: true`
+
+Disable or enable the method to auto send the suspicious resources!
+
+You can config the `resMaxSize` and `resMaxDuration` to control the report limit!
+
+
+#### `resMaxSize: number | optional | default: 2`
+
+When size of resource greater is than resMaxSize, the data will be reported, unit is mB!
+
+
+#### `resMaxDuration: number | optional | default: 2`
+
+When duration of resource is greater than resMaxDuration, the data will be reported, unit is second!
+
 
 #### `dsn: string | optional`
 
 Data-Handle-Server address
 
+
 #### `callback: Function | optional`
 
-Handle with the data by yourself, <b>dsn will be disable when you set callback</b>
+Handle the data by yourself
+
