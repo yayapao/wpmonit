@@ -1,7 +1,7 @@
 import { WN, WP, WL } from './constant'
 import { getNavs } from './nav'
 import { getNetworkConnections } from './network'
-import { getOSInfo } from './os'
+import { getUserAgentInfo } from './ua'
 import { getScreenInfo } from './screen'
 import { getPaintInfo } from './paint'
 import { coreVitals } from './metrics'
@@ -18,7 +18,7 @@ export function collectInfo() {
   const href = WL.href
   const paintInfo = getPaintInfo()
   const nav = getNavs()
-  const os = getOSInfo()
+  const ua = getUserAgentInfo()
   const screen = getScreenInfo()
   const ntconnections = getNetworkConnections()
   const memory = getMemoryInfo()
@@ -32,7 +32,7 @@ export function collectInfo() {
       ...coreVitals,
     },
     nav,
-    os,
+    ua,
     memory,
     screen,
     ntconnections,

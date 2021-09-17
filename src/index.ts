@@ -3,7 +3,7 @@ import { isSupportedWP, collectInfo } from './atom/main'
 import { getState, logStateChange } from './atom/lifecircle'
 import { Options } from './index.d'
 import { initCoreVitals } from './atom/coreVitals'
-import { omit } from 'lodash'
+import { omit, pick } from 'lodash'
 
 class WPMonit {
   private v = '0.0.3'
@@ -14,9 +14,10 @@ class WPMonit {
   // trigger - 上报时机, config - 用户配置, info - WPM messages
   private sendToAnalytics(trigger: string) {
     const info = collectInfo()
+    const cnfs = omit(config, ['delay', 'resMaxSize', 'resMaxDuration', 'autoSendSR', 'dsn'])
     const data = {
       trigger,
-      ...config,
+      ...cnfs,
       ...info,
     }
     const { dsn, callback } = config
