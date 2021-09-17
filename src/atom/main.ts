@@ -15,21 +15,23 @@ export function collectInfo() {
   const timeOrigin = WP.timeOrigin
   const href = WL.href
   const paintInfo = getPaintInfo()
-  const navs = getNavs()
-  const osInfo = getOSInfo()
-  const screenInfo = getScreenInfo()
+  const nav = getNavs()
+  const os = getOSInfo()
+  const screen = getScreenInfo()
   const ntconnections = getNetworkConnections()
-  const memoryInfo = getMemoryInfo()
+  const memory = getMemoryInfo()
   return {
     timeOrigin,
     href,
-    ...paintInfo,
-    ...coreVitals,
-    ...memoryInfo,
-    ...navs,
-    ...osInfo,
-    ...screenInfo,
-    ...ntconnections,
+    coreVitals: {
+      ...paintInfo,
+      ...coreVitals
+    },
+    nav,
+    os,
+    memory,
+    screen,
+    ntconnections
   }
 }
 

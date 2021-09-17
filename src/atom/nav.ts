@@ -69,9 +69,7 @@ export function getNavs() {
   const infos = getNavInfo()
   const timing = getNavTiming()
   return {
-    navInfo: {
-      ...infos,
-      ...timing,
-    },
+    ...infos,
+    ...timing,
   }
 }
