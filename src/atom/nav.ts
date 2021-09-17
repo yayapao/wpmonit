@@ -5,7 +5,9 @@ import { getDM, getHC } from './constant'
 export function getNavTiming(): WPMNavigationTiming {
   if (!isSupportedWP()) return {}
   // get navigation timing data
-  const nav = window.performance.getEntriesByType('navigation')[0] as any
+  const nav = window.performance.getEntriesByType(
+    'navigation'
+  )[0] as PerformanceNavigationTiming
   if (!nav) return {}
   const {
     redirectStart,
@@ -13,6 +15,7 @@ export function getNavTiming(): WPMNavigationTiming {
     domainLookupStart,
     domainLookupEnd,
     connectEnd,
+    secureConnectionStart,
     connectStart,
     requestStart,
     responseStart,
@@ -21,21 +24,25 @@ export function getNavTiming(): WPMNavigationTiming {
     domComplete,
     loadEventEnd,
     loadEventStart,
+    transferSize,
+    encodedBodySize,
+    decodedBodySize,
   } = nav
   return {
     // redirect time
     redirect: +(redirectEnd - redirectStart).toFixed(2),
     // DNS lookup time
     dns_lookup: +(domainLookupEnd - domainLookupStart).toFixed(2),
-    // TCP connection
-    tcp_connection: +(connectEnd - connectStart).toFixed(2),
-    // ssl connnection
-    ssl_connection: +(requestStart - connectEnd).toFixed(2),
+    connection_time: +(connectEnd - connectStart).toFixed(2),
+    tls_time:
+      secureConnectionStart > 0
+        ? +(connectEnd - secureConnectionStart).toFixed(2)
+        : 0,
     // time to fisrst bytes
     ttfb: +(responseStart - requestStart).toFixed(2),
     // content download time
     download_time: +(responseEnd - responseStart).toFixed(2),
-    // dom parse cost time
+    // dom parse
     dom_parsed: +(domInteractive - responseEnd).toFixed(2),
     // resource loaded
     loadend: +(loadEventEnd - loadEventStart).toFixed(2),
@@ -43,6 +50,10 @@ export function getNavTiming(): WPMNavigationTiming {
     total_loaded: +loadEventEnd.toFixed(2),
     // dom ready: dom parse + dom content loaded
     dom_ready: +domComplete.toFixed(2),
+    // document and resource size
+    transfer_size: transferSize | 0,
+    encoded_body_size: encodedBodySize | 0,
+    decoded_body_size: decodedBodySize | 0,
   }
 }
 
@@ -58,7 +69,9 @@ export function getNavs() {
   const infos = getNavInfo()
   const timing = getNavTiming()
   return {
-    ...infos,
-    ...timing,
+    navInfo: {
+      ...infos,
+      ...timing,
+    },
   }
 }
