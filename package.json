@@ -1,6 +1,6 @@
 {
   "name": "wpmonit",
-  "version": "1.0.4",
+  "version": "1.1.1",
   "description": "Powerful frontend Web Performance Measure - SDK!",
   "main": "npm/index.js",
   "types": "npm/index.d.ts",
