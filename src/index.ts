@@ -7,12 +7,12 @@ import { omit } from 'lodash'
 
 class WPMonit {
   private v = '0.0.3'
-  constructor(opts: Partial<Options> = {}) {
+  constructor(opts: Options) {
     this.setConfig(opts)
   }
 
   // trigger - 上报时机, config - 用户配置, info - WPM messages
-  private report(trigger: string) {
+  private sendToAnalytics(trigger: string) {
     const info = collectInfo()
     const data = {
       trigger,
@@ -24,19 +24,19 @@ class WPMonit {
     // if define callback then trigger and return
     if (typeof callback === 'function') {
       callback && callback(omit(data, ['callback']))
-      return
     }
 
     try {
-      const res = navigator.sendBeacon(dsn, JSON.stringify(data))
+      const body = JSON.stringify(data)
+      const canReport = dsn && dsn !== ''
       // write in queue failed, then fetch the data
-      if (!res) {
-        fetch(dsn, {
-          body: JSON.stringify(data),
-          cache: 'no-cache',
-          method: 'POST',
-        })
-      }
+      canReport &&
+        (navigator.sendBeacon(dsn, body) ||
+          fetch(dsn, {
+            body,
+            cache: 'no-cache',
+            method: 'POST',
+          }))
     } catch (error) {
       return
     }
@@ -50,22 +50,17 @@ class WPMonit {
 
     initCoreVitals()
 
-    // pageview state
-    let state = getState()
-    // setTimer to push data
+    // 1. 主动上报
     setTimeout(() => {
-      this.report('timer')
+      this.sendToAnalytics('timer')
     }, config.delay)
 
+    // 2. sendBeacon 上报
     window.addEventListener(
       'pagehide',
       (event) => {
-        if (event.persisted) {
-          state = logStateChange('frozen', state)
-        } else {
-          state = logStateChange('terminated', state)
-          // before unload trigger
-          this.report('terminated')
+        if (!event.persisted) {
+          this.sendToAnalytics('terminated')
         }
       },
       { capture: true }
@@ -79,7 +74,11 @@ class WPMonit {
   }
 }
 
-function init(opts: Partial<Options> = {}): WPMonit {
+function init(opts: Options): WPMonit {
+  const { app } = opts
+
+  if (!app || app === '') throw new Error('app is required!')
+
   const wpmonit = new WPMonit(opts)
   wpmonit.start()
   return wpmonit

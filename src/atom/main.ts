@@ -6,6 +6,8 @@ import { getScreenInfo } from './screen'
 import { getPaintInfo } from './paint'
 import { coreVitals } from './metrics'
 import { getMemoryInfo } from './memory'
+import { getResource } from './resource'
+import { config } from '../config'
 
 export function isSupportedWP(): boolean {
   return WP && !!WP.now && !!WP.getEntries && !!WN
@@ -20,18 +22,21 @@ export function collectInfo() {
   const screen = getScreenInfo()
   const ntconnections = getNetworkConnections()
   const memory = getMemoryInfo()
+  const resources = config.autoSendSR ? getResource() : []
+
   return {
     timeOrigin,
     href,
     coreVitals: {
       ...paintInfo,
-      ...coreVitals
+      ...coreVitals,
     },
     nav,
     os,
     memory,
     screen,
-    ntconnections
+    ntconnections,
+    resources,
   }
 }
 
